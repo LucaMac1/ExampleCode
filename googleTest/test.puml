@@ -1,6 +1,6 @@
 @startuml
 
-class fooIf<<Interface>>
+class IFoo<<Interface>>
 {
 + {abstract} fooStr(std::string&): void
 }
@@ -17,8 +17,8 @@ class mockFoo
 
 class dummy
 {
-+ dummy(fooIf&)
-# fooIf foo
++ dummy(IFoo&)
+# IFoo foo
 }
 
 class test
@@ -29,9 +29,9 @@ class test
 
 
 
-fooIf <|.. foo
-fooIf <|.. mockFoo
-dummy -right-> fooIf
+IFoo <|.. foo
+IFoo <|.. mockFoo
+dummy -right-> IFoo
 
 test *-- dummy
 test *-- mockFoo

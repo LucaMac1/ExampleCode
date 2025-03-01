@@ -19,8 +19,9 @@ set(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE ON)
 set(OBJECT_DIR ${CMAKE_BINARY_DIR}/CMakeFiles/ExampleGtest.dir/src)
 message("-- Object files will be output to: ${OBJECT_DIR}")
 
-add_executable(${PROJECT_NAME} src/example.cpp 
-src/dummy.cpp src/foo.cpp test/test_example.cpp)
+set(SOURCES src/Dummy.cpp src/Foo.cpp test/DummyTest.cpp test/FooTest.cpp)
+
+add_executable(${PROJECT_NAME} ${SOURCES})
 
 target_link_libraries(${PROJECT_NAME} gtest_main gmock_main)
 
@@ -41,7 +42,7 @@ add_custom_target(gcov
 add_custom_command(TARGET gcov
     COMMAND echo "=================== GCOV ===================="
     COMMAND ${GCOV_PATH} -b ${CMAKE_SOURCE_DIR}/src/*.cpp -o ${OBJECT_DIR} 
-    COMMAND echo "-- Source diretorie: ${CMAKE_SOURCE_DIR}/src/"
+    COMMAND echo "-- Source directory: ${CMAKE_SOURCE_DIR}/src/"
     COMMAND echo "-- Coverage files have been output to ${CMAKE_BINARY_DIR}/gcoverage"
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/gcoverage
     )
@@ -56,8 +57,8 @@ add_custom_command(TARGET lcov
     COMMAND echo "=================== LCOV ===================="
     COMMAND echo "-- Passing lcov tool under code coverage"
     COMMAND lcov --capture --directory ${OBJECT_DIR} --output-file lcoverage/main_coverage.info -b .
-    COMMAND echo "-- Remove undesired files from main_coverage"
-    COMMAND lcov --remove lcoverage/main_coverage.info '*/usr/include/*' '*/gtest/*' -o lcoverage/filtered_coverage.info
+    COMMAND echo "-- Removing undesired files from main_coverage"
+    COMMAND lcov --remove lcoverage/main_coverage.info '*/usr/include/*' '*/gtest/*' '*/include/IFoo.h' -o lcoverage/filtered_coverage.info
     COMMAND echo "-- Generating HTML output files"
     COMMAND genhtml lcoverage/filtered_coverage.info --output-directory lcoverage
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
